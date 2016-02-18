@@ -1,0 +1,11 @@
+/HAL/
+/ICallBLE/
+/LIB/
+/NPI/
+/OSAL/
+/PROFILES/
+/Startup/
+/TOOLS/
+/makefile
+/objects.mk
+/sources.mk

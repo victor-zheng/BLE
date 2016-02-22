@@ -23,7 +23,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED ìAS ISî WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED ÊèÇS ISÔøΩWITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -77,7 +77,7 @@
 
 #include "simpleBLEPeripheral.h"
 
-#include <ti/drivers/lcd/LCDDogm1286.h>
+//#include <ti/drivers/lcd/LCDDogm1286.h>
 
 /*********************************************************************
  * CONSTANTS
@@ -383,7 +383,7 @@ static void SimpleBLEPeripheral_init(void)
                       SBP_PERIODIC_EVT_PERIOD, 0, false, SBP_PERIODIC_EVT);
   
 #ifndef SENSORTAG_HW
-  Board_openLCD();
+//  Board_openLCD();      //victor for launchpad
 #endif //SENSORTAG_HW
   
 #if SENSORTAG_HW
@@ -525,7 +525,7 @@ static void SimpleBLEPeripheral_init(void)
   LCD_WRITE_STRING("BLE Peripheral B", LCD_PAGE0);
 #endif // HAL_IMAGE_A
 #else
-  LCD_WRITE_STRING("BLE Peripheral", LCD_PAGE0);
+//  LCD_WRITE_STRING("BLE Peripheral", LCD_PAGE0);
 #endif // FEATURE_OAD
 }       
 
@@ -715,14 +715,14 @@ static uint8_t SimpleBLEPeripheral_processGATTMsg(gattMsgEvent_t *pMsg)
     // violated. All subsequent ATT requests or indications will be dropped.
     // The app is informed in case it wants to drop the connection.
     
-    // Display the opcode of the message that caused the violation.
+/*    // Display the opcode of the message that caused the violation.
     LCD_WRITE_STRING_VALUE("FC Violated:", pMsg->msg.flowCtrlEvt.opcode,
-                           10, LCD_PAGE5);
+                           10, LCD_PAGE5);*/
   }    
   else if (pMsg->method == ATT_MTU_UPDATED_EVENT)
   {
     // MTU size updated
-    LCD_WRITE_STRING_VALUE("MTU Size:", pMsg->msg.mtuEvt.MTU, 10, LCD_PAGE5);
+ /*   LCD_WRITE_STRING_VALUE("MTU Size:", pMsg->msg.mtuEvt.MTU, 10, LCD_PAGE5);*/
   }
   
   // Free message payload. Needed only for ATT Protocol messages
@@ -765,8 +765,8 @@ static void SimpleBLEPeripheral_sendAttRsp(void)
     }
     else
     {
-      // Continue retrying
-      LCD_WRITE_STRING_VALUE("Rsp send retry:", rspTxRetry, 10, LCD_PAGE5);
+/*      // Continue retrying
+      LCD_WRITE_STRING_VALUE("Rsp send retry:", rspTxRetry, 10, LCD_PAGE5);*/
     }
   }
 }
@@ -788,14 +788,14 @@ static void SimpleBLEPeripheral_freeAttRsp(uint8_t status)
     // See if the response was sent out successfully
     if (status == SUCCESS)
     {
-      LCD_WRITE_STRING_VALUE("Rsp sent, retry:", rspTxRetry, 10, LCD_PAGE5);
+/*      LCD_WRITE_STRING_VALUE("Rsp sent, retry:", rspTxRetry, 10, LCD_PAGE5);*/
     }
     else
     {
       // Free response payload
       GATT_bm_free(&pAttRsp->msg, pAttRsp->method);
       
-      LCD_WRITE_STRING_VALUE("Rsp retry failed:", rspTxRetry, 10, LCD_PAGE5);
+/*      LCD_WRITE_STRING_VALUE("Rsp retry failed:", rspTxRetry, 10, LCD_PAGE5);*/
     }
     
     // Free response message
@@ -890,14 +890,14 @@ static void SimpleBLEPeripheral_processStateChangeEvt(gaprole_States_t newState)
         DevInfo_SetParameter(DEVINFO_SYSTEM_ID, DEVINFO_SYSTEM_ID_LEN, 
                              systemId);
 
-        // Display device address
+/*        // Display device address
         LCD_WRITE_STRING(Util_convertBdAddr2Str(ownAddress), LCD_PAGE1);
-        LCD_WRITE_STRING("Initialized", LCD_PAGE2);
+        LCD_WRITE_STRING("Initialized", LCD_PAGE2);*/
       }
       break;
 
     case GAPROLE_ADVERTISING:
-      LCD_WRITE_STRING("Advertising", LCD_PAGE2);
+/*      LCD_WRITE_STRING("Advertising", LCD_PAGE2);*/
       break;
 
 #ifdef PLUS_BROADCASTER   
@@ -936,8 +936,8 @@ static void SimpleBLEPeripheral_processStateChangeEvt(gaprole_States_t newState)
 
         Util_startClock(&periodicClock);
         
-        LCD_WRITE_STRING("Connected", LCD_PAGE2);
-        LCD_WRITE_STRING(Util_convertBdAddr2Str(peerAddress), LCD_PAGE3);
+/*        LCD_WRITE_STRING("Connected", LCD_PAGE2);
+        LCD_WRITE_STRING(Util_convertBdAddr2Str(peerAddress), LCD_PAGE3);*/
 
         #ifdef PLUS_BROADCASTER
           // Only turn advertising on for this state when we first connect
@@ -964,7 +964,7 @@ static void SimpleBLEPeripheral_processStateChangeEvt(gaprole_States_t newState)
       break;
 
     case GAPROLE_CONNECTED_ADV:
-      LCD_WRITE_STRING("Connected Advertising", LCD_PAGE2);
+ /*     LCD_WRITE_STRING("Connected Advertising", LCD_PAGE2);*/
       break;
 
     case GAPROLE_WAITING:
@@ -972,23 +972,23 @@ static void SimpleBLEPeripheral_processStateChangeEvt(gaprole_States_t newState)
       
       SimpleBLEPeripheral_freeAttRsp(bleNotConnected);
 
-      LCD_WRITE_STRING("Disconnected", LCD_PAGE2);
+/*      LCD_WRITE_STRING("Disconnected", LCD_PAGE2);
 
       // Clear remaining lines
       LCD_WRITE_STRING("", LCD_PAGE3);
       LCD_WRITE_STRING("", LCD_PAGE4);
-      LCD_WRITE_STRING("", LCD_PAGE5);
+      LCD_WRITE_STRING("", LCD_PAGE5);*/
       break;
 
     case GAPROLE_WAITING_AFTER_TIMEOUT:
       SimpleBLEPeripheral_freeAttRsp(bleNotConnected);
       
-      LCD_WRITE_STRING("Timed Out", LCD_PAGE2);
+/*      LCD_WRITE_STRING("Timed Out", LCD_PAGE2);
       
       // Clear remaining lines
       LCD_WRITE_STRING("", LCD_PAGE3);
       LCD_WRITE_STRING("", LCD_PAGE4);
-      LCD_WRITE_STRING("", LCD_PAGE5);
+      LCD_WRITE_STRING("", LCD_PAGE5);*/
 
       #ifdef PLUS_BROADCASTER
         // Reset flag for next connection.
@@ -997,11 +997,11 @@ static void SimpleBLEPeripheral_processStateChangeEvt(gaprole_States_t newState)
       break;
 
     case GAPROLE_ERROR:
-      LCD_WRITE_STRING("Error", LCD_PAGE2);
+/*      LCD_WRITE_STRING("Error", LCD_PAGE2);*/
       break;
 
     default:
-      LCD_WRITE_STRING("", LCD_PAGE2);
+/*      LCD_WRITE_STRING("", LCD_PAGE2);*/
       break;
   }
 
@@ -1046,13 +1046,13 @@ static void SimpleBLEPeripheral_processCharValueChangeEvt(uint8_t paramID)
     case SIMPLEPROFILE_CHAR1:
       SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR1, &newValue);
 
-      LCD_WRITE_STRING_VALUE("Char 1:", (uint16_t)newValue, 10, LCD_PAGE4);
+/*      LCD_WRITE_STRING_VALUE("Char 1:", (uint16_t)newValue, 10, LCD_PAGE4);*/
       break;
 
     case SIMPLEPROFILE_CHAR3:
       SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR3, &newValue);
 
-      LCD_WRITE_STRING_VALUE("Char 3:", (uint16_t)newValue, 10, LCD_PAGE4);
+/*      LCD_WRITE_STRING_VALUE("Char 3:", (uint16_t)newValue, 10, LCD_PAGE4);*/
       break;
 
     default:

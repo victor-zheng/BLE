@@ -302,9 +302,9 @@
 			<locationURI>PARENT-5-ORG_PROJ_DIR/Profiles/Keys/simplekeys.h</locationURI>
 		</link>
 		<link>
-			<name>Startup/Board.c</name>
+			<name>Startup/CC2650_LAUNCHXL.c</name>
 			<type>1</type>
-			<locationURI>TI_RTOS_DRIVERS_BASE/ti/boards/SRF06EB/Board.c</locationURI>
+			<locationURI>PARENT-9-ORG_PROJ_DIR/tirtos_simplelink_2_13_00_06/packages/ti/boards/CC2650_LAUNCHXL/CC2650_LAUNCHXL.c</locationURI>
 		</link>
 		<link>
 			<name>Startup/ST</name>

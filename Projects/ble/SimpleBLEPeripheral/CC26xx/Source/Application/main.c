@@ -46,7 +46,7 @@
 #include "bcomdef.h"
 #include "peripheral.h"
 #include "simpleBLEPeripheral.h"
-
+#include <ti/drivers/pin/PINCC26XX.h>
 /* Header files required to enable instruction fetch cache */
 #include <inc/hw_memmap.h>
 #include <driverlib/vims.h>
@@ -83,6 +83,7 @@ extern uint32_t ti_sysbios_family_arm_m3_Hwi_resetVectors;
 int main()
 {
   PIN_init(BoardGpioInitTable);
+  PINCC26XX_setOutputValue(Board_LED1, 1);
 
 #ifndef POWER_SAVING
     /* Set constraints for Standby, powerdown and idle mode */

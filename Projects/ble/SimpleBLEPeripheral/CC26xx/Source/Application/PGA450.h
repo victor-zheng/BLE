@@ -54,6 +54,11 @@ typedef struct PGA450_R_Package {
 	uint8 CheckByte;
 	uint8 data;
 } PGA450_R_Package;
+typedef struct Bandpass_Coefficient {
+	uint16 A2;
+	uint16 A3;
+	uint16 B1;
+}Bandpass_Coefficient;
 /*********************************************************************
 *  EXTERNAL VARIABLES
 */

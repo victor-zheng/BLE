@@ -349,8 +349,8 @@ void SimpleBLEPeripheral_createTask(void)
 
 
 /*********************************************************************
- * @fn      SPI_1_init
-/*********************************************************************/
+  SPI_1_init
+*/
 static SPI_Handle Spi_1_init(void)
 {
   // Initial the SPI1
@@ -360,7 +360,7 @@ static SPI_Handle Spi_1_init(void)
   // Initialize the SPI driver
   SPI_Params_init(&SbpSpiParams);
   SbpSpiParams.bitRate = 100000;
-
+  SbpSpiParams.frameFormat = SPI_POL0_PHA1;
   SbpSpiHandle = SPI_open(CC2650_SPI1, &SbpSpiParams);
   if (!SbpSpiHandle)
   {
@@ -419,8 +419,12 @@ static void SimpleBLEPeripheral_init(void)
   spiTransaction.rxBuf = rxbuf;
   SPI_transfer(Spi_1_Handle, &spiTransaction);
 
+  txbuf[0] = 0x19;
+  txbuf[1] = 0xDC;
+  txbuf[2] = 0xFF;
+  SPI_transfer(Spi_1_Handle, &spiTransaction);
 
-
+  SPI_transfer(Spi_1_Handle, &spiTransaction);
 #ifndef SENSORTAG_HW
   Board_openLCD();
 #endif //SENSORTAG_HW

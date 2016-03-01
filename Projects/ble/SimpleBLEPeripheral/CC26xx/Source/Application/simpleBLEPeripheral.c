@@ -23,7 +23,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED ìAS ISî WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED ÊèÇS ISÔøΩWITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -347,6 +347,29 @@ void SimpleBLEPeripheral_createTask(void)
   Task_construct(&sbpTask, SimpleBLEPeripheral_taskFxn, &taskParams, NULL);
 }
 
+
+/*********************************************************************
+ * @fn      SPI_1_init
+/*********************************************************************/
+static SPI_Handle Spi_1_init(void)
+{
+  // Initial the SPI1
+  SPI_Handle SbpSpiHandle;
+  SPI_Params SbpSpiParams;
+
+  // Initialize the SPI driver
+  SPI_Params_init(&SbpSpiParams);
+  SbpSpiParams.bitRate = 100000;
+
+  SbpSpiHandle = SPI_open(CC2650_SPI1, &SbpSpiParams);
+  if (!SbpSpiHandle)
+  {
+	  return NULL;
+  }
+  else
+	  return SbpSpiHandle;
+}
+
 /*********************************************************************
  * @fn      SimpleBLEPeripheral_init
  *
@@ -382,6 +405,22 @@ static void SimpleBLEPeripheral_init(void)
   Util_constructClock(&periodicClock, SimpleBLEPeripheral_clockHandler,
                       SBP_PERIODIC_EVT_PERIOD, 0, false, SBP_PERIODIC_EVT);
   
+
+  static SPI_Handle Spi_1_Handle;
+  Spi_1_Handle = Spi_1_init();
+
+  // SPI_Transaction spiTransaction;
+  uint8 txbuf[5] = {0x16,0x2F,0x01,0xFF,0xFF};
+  uint8 rxbuf[5];
+  SPI_Transaction spiTransaction;
+  spiTransaction.arg = NULL;
+  spiTransaction.count = 3;
+  spiTransaction.txBuf = txbuf;
+  spiTransaction.rxBuf = rxbuf;
+  SPI_transfer(Spi_1_Handle, &spiTransaction);
+
+
+
 #ifndef SENSORTAG_HW
   Board_openLCD();
 #endif //SENSORTAG_HW

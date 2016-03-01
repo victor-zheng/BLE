@@ -78,7 +78,7 @@
 #include "simpleBLEPeripheral.h"
 
 #include <ti/drivers/lcd/LCDDogm1286.h>
-
+#include "PGA450.h"
 /*********************************************************************
  * CONSTANTS
  */
@@ -406,25 +406,11 @@ static void SimpleBLEPeripheral_init(void)
                       SBP_PERIODIC_EVT_PERIOD, 0, false, SBP_PERIODIC_EVT);
   
 
-  static SPI_Handle Spi_1_Handle;
-  Spi_1_Handle = Spi_1_init();
+  //Initial the SPI for PGA450
+  SPI_PGA450_Handle = Spi_1_init();
+  // Reset the PGA450 from SPI;
+  PGA450_Reset();
 
-  // SPI_Transaction spiTransaction;
-  uint8 txbuf[5] = {0x16,0x2F,0x01,0xFF,0xFF};
-  uint8 rxbuf[5];
-  SPI_Transaction spiTransaction;
-  spiTransaction.arg = NULL;
-  spiTransaction.count = 3;
-  spiTransaction.txBuf = txbuf;
-  spiTransaction.rxBuf = rxbuf;
-  SPI_transfer(Spi_1_Handle, &spiTransaction);
-
-  txbuf[0] = 0x19;
-  txbuf[1] = 0xDC;
-  txbuf[2] = 0xFF;
-  SPI_transfer(Spi_1_Handle, &spiTransaction);
-
-  SPI_transfer(Spi_1_Handle, &spiTransaction);
 #ifndef SENSORTAG_HW
   Board_openLCD();
 #endif //SENSORTAG_HW

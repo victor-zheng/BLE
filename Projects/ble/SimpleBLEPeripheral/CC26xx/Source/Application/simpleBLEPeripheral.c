@@ -382,6 +382,7 @@ static SPI_Handle Spi_1_init(void)
  *
  * @return  None.
  */
+Uint8 test;
 static void SimpleBLEPeripheral_init(void)
 {
   // ******************************************************************
@@ -410,6 +411,7 @@ static void SimpleBLEPeripheral_init(void)
   SPI_PGA450_Handle = Spi_1_init();
   // Reset the PGA450 from SPI;
   PGA450_Reset();
+
 
 #ifndef SENSORTAG_HW
   Board_openLCD();

@@ -144,6 +144,8 @@ void PGA450_Transfer(SPI_Handle Handle, PGA450_W_Package *txbuf, PGA450_R_Packag
   rxbuf->data = rbuf[1];
 }
 
+
+
 void PGA450_Reset(void)
 {
 	PGA450_Write.cmd = CMD_TEST_write;
@@ -161,13 +163,72 @@ void PGA450_Release(void)
 	PGA450_Transfer(SPI_PGA450_Handle, &PGA450_Write, &PGA450_Read);
 }
 
+uint8 Read_ESFR(uint8 addr, uint8* data)
+{
+	PGA450_W_Package Write;
+	PGA450_R_Package Read;
+	uint8 status = 1;
+
+	Write.cmd = CMD_ESFR_read;
+	Write.address = addr;
+	PGA450_Transfer(SPI_PGA450_Handle, &Write, &Read);
+
+	Write.cmd = CMD_ESFR_read;
+	Write.address = addr;
+	PGA450_Transfer(SPI_PGA450_Handle, &Write, &Read);
+	if(Read.CheckByte == 0x02)
+	{
+		*data = Read.data;
+		status = 0;
+	}
+	else
+		status = 1;
+	return status;
+}
+
+uint8 Write_ESFR(uint8 addr, uint8 data)
+{
+	PGA450_W_Package Write;
+	PGA450_R_Package Read;
+	uint8 temp;
+	uint8 status;
+
+	Write.cmd = CMD_ESFR_write;
+	Write.address = addr;
+	Write.data0 = data;
+	PGA450_Transfer(SPI_PGA450_Handle, &Write, &Read);
+
+	if(Read_ESFR(addr,&temp) == 0)
+	{
+		if(temp == data) status = 0;
+		else status =1;
+	}
+	else if(Read_ESFR(addr,&temp) == 0)
+	{
+		if(temp == data) status = 0;
+		else status =1;
+	}
+	else
+		status =1;
+	return status;
+}
+
 void Set_Bandpass_Coefficient(uint8 CF, uint8 BW )
 {
 	uint16 A2,A3,B1;
+
 	A2 = Bandpass_Coefficient_Table[CF-39][BW-4].A2;
 	A3 = Bandpass_Coefficient_Table[CF-39][BW-4].A3;
 	B1 = Bandpass_Coefficient_Table[CF-39][BW-4].B1;
-	PGA450_Write.cmd = CMD_ESFR_write;
+	//write A2
+	Write_ESFR(ADDR_BPF_A2_MSB,A2 >> 8);
+	Write_ESFR(ADDR_BPF_A2_LSB,A2 & 0xFF);
+	//write A3
+	Write_ESFR(ADDR_BPF_A3_MSB,A3 >> 8);
+	Write_ESFR(ADDR_BPF_A3_LSB,A3 & 0xFF);
+	//write B1
+	Write_ESFR(ADDR_BPF_B1_MSB,B1 >> 8);
+	Write_ESFR(ADDR_BPF_B1_LSB,B1 & 0xFF);
 }
 
 /*********************************************************************

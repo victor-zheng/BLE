@@ -52,6 +52,7 @@
 PGA450_W_Package PGA450_Write;
 PGA450_R_Package PGA450_Read;
 SPI_Handle SPI_PGA450_Handle;
+PGA450_Parameter PAG450_Para;
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
@@ -264,9 +265,21 @@ void Set_Downsample_Rate(uint8 num )
 	Write_ESFR(ADDR_DOWNSAMPLE,num);
 }
 
-void Set_Lowpass_Coefficient(uint8 Cutoff)
+void Set_Lowpass_Coefficient(uint8 cutoff, uint8 downsample)
 {
+	uint16 A2,B1;
+	A2 = Lowpass_Coefficient_Table[downsample][cutoff].A2;
+	B1 = Lowpass_Coefficient_Table[downsample][cutoff].B1;
+	//write A2
+	Write_ESFR(ADDR_BPF_A2_MSB,A2 >> 8);
+	Write_ESFR(ADDR_BPF_A2_LSB,A2 & 0xFF);
+	//write B1
+	Write_ESFR(ADDR_BPF_B1_MSB,B1 >> 8);
+	Write_ESFR(ADDR_BPF_B1_LSB,B1 & 0xFF);
 }
 
+void Set_Pulse_Count(uint16 count)
+{
+}
 /*********************************************************************
 *********************************************************************/

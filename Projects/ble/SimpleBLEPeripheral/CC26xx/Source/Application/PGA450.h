@@ -64,6 +64,33 @@ typedef struct Lowpass_Coefficient {
 	uint16 A2;
 	uint16 B1;
 }Lowpass_Coefficient;
+
+typedef struct Transducer_Driver_Parameter {
+	uint8    burst_mode;        //0=Push-pull mode
+	                            //1=Single-ended on OUTA, micro control on OUTB
+	                            //2=Single-ended on OUTB, micro control on OUTA
+	                            //3=Single-ended on OUTA, single-ended on OUTB
+	                            //4=Micro on OUTA, micro on OUTB
+	uint8    drive_voltage;     //0-15   4.7V-8.4V
+	uint16   outA_on_time;
+	uint16   outA_off_time;
+	uint16   outB_on_time;
+	uint16   outB_off_time;
+	uint8    dead_time;
+	uint8    outA_pulse_num;
+	uint8    outB_pulse_num;
+}Transducer_Driver_Parameter;
+
+typedef struct PGA450_Parameter {
+	Transducer_Driver_Parameter  driver;
+	uint8                        LNA_gain;      //0=1750V/  1=930V/V  2=517V/V  3=104V/V
+	uint8                        BPF_CF;        //39-70
+	uint8                        BPF_BW;        //4-7
+	uint8                        downsample;    //if low pass enable 25 ¡Ü DOWNSAMPLE ¡Ü 50
+	uint8                        LPF_CUT;       //1-8  0.5kHz-4kHz
+	uint8                        FIFO_mode;     //0=12bit   1=upper 8bit  2=lower 8bit 3=mid 8bit
+	uint8                        blink_time;    //0-255
+}PGA450_Parameter;
 /*********************************************************************
 *  EXTERNAL VARIABLES
 */

@@ -59,6 +59,11 @@ typedef struct Bandpass_Coefficient {
 	uint16 A3;
 	uint16 B1;
 }Bandpass_Coefficient;
+
+typedef struct Lowpass_Coefficient {
+	uint16 A2;
+	uint16 B1;
+}Lowpass_Coefficient;
 /*********************************************************************
 *  EXTERNAL VARIABLES
 */

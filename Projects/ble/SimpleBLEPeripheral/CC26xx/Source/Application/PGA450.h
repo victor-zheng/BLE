@@ -72,13 +72,15 @@ typedef struct Transducer_Driver_Parameter {
 	                            //3=Single-ended on OUTA, single-ended on OUTB
 	                            //4=Micro on OUTA, micro on OUTB
 	uint8    drive_voltage;     //0-15   4.7V-8.4V
+	uint8    outA_pulse_num;
+	uint8    outB_pulse_num;
+	uint32   frequency;
 	uint16   outA_on_time;
 	uint16   outA_off_time;
 	uint16   outB_on_time;
 	uint16   outB_off_time;
 	uint8    dead_time;
-	uint8    outA_pulse_num;
-	uint8    outB_pulse_num;
+
 }Transducer_Driver_Parameter;
 
 typedef struct PGA450_Parameter {
@@ -203,11 +205,17 @@ extern SPI_Handle SPI_PGA450_Handle;
 #define ADDR_OSC_SYNC_CTRL        0xE6
 #define ADDR_ANALOG_MUX           0xE9
 #define ADDR_DIGITAL_MUX          0xEA
+
+
 /*********************************************************************
- * FUNCTIONS
+ * INTERNAL FUNCTIONS
  */
 uint8 Read_ESFR(uint8 addr, uint8* data);
 uint8 Write_ESFR(uint8 addr, uint8 data);
+
+/*********************************************************************
+ * PUBLIC FUNCTIONS
+ */
 void PGA450_Reset(void);
 void PGA450_Release(void);
 

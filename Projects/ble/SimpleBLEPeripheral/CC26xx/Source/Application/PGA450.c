@@ -52,7 +52,10 @@
 PGA450_W_Package PGA450_Write;
 PGA450_R_Package PGA450_Read;
 SPI_Handle SPI_PGA450_Handle;
-PGA450_Parameter PAG450_Para;
+
+volatile uint8 buffer[768];
+
+PGA450_Parameter PAG450_Para = {};
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
@@ -185,11 +188,31 @@ void PGA450_Reset(void)
 
 void PGA450_Release(void)
 {
-
 	PGA450_Write.cmd = CMD_TEST_write;
 	PGA450_Write.address = 0x2F;
 	PGA450_Write.data0 = 0;
 	PGA450_Transfer(SPI_PGA450_Handle, &PGA450_Write, &PGA450_Read);
+}
+
+uint8 Read_EXT_RAM(uint16 addr, uint8* data)
+{
+	PGA450_W_Package Write;
+	PGA450_R_Package Read;
+	uint8 status = 1;
+
+	Write.cmd = CMD_External_RAM_read;
+	Write.address = addr >> 8;
+	Write.data0 = addr & 0xFF;
+	PGA450_Transfer(SPI_PGA450_Handle, &Write, &Read);
+	PGA450_Transfer(SPI_PGA450_Handle, &Write, &Read);
+	if(Read.CheckByte == 0x02)
+	{
+		*data = Read.data;
+		status = 0;
+	}
+	else
+		status = 1;
+	return status;
 }
 
 uint8 Read_ESFR(uint8 addr, uint8* data)
@@ -201,9 +224,6 @@ uint8 Read_ESFR(uint8 addr, uint8* data)
 	Write.cmd = CMD_ESFR_read;
 	Write.address = addr;
 	PGA450_Transfer(SPI_PGA450_Handle, &Write, &Read);
-
-	Write.cmd = CMD_ESFR_read;
-	Write.address = addr;
 	PGA450_Transfer(SPI_PGA450_Handle, &Write, &Read);
 	if(Read.CheckByte == 0x02)
 	{
@@ -242,6 +262,10 @@ uint8 Write_ESFR(uint8 addr, uint8 data)
 	return status;
 }
 
+void Set_LNA_Gain(uint8 gain)
+{
+	Write_ESFR(ADDR_CONTROL_1,gain << 2);
+}
 void Set_Bandpass_Coefficient(uint8 CF, uint8 BW )
 {
 	uint16 A2,A3,B1;
@@ -260,11 +284,6 @@ void Set_Bandpass_Coefficient(uint8 CF, uint8 BW )
 	Write_ESFR(ADDR_BPF_B1_LSB,B1 & 0xFF);
 }
 
-void Set_Downsample_Rate(uint8 num )
-{
-	Write_ESFR(ADDR_DOWNSAMPLE,num);
-}
-
 void Set_Lowpass_Coefficient(uint8 cutoff, uint8 downsample)
 {
 	uint16 A2,B1;
@@ -278,8 +297,63 @@ void Set_Lowpass_Coefficient(uint8 cutoff, uint8 downsample)
 	Write_ESFR(ADDR_BPF_B1_LSB,B1 & 0xFF);
 }
 
-void Set_Pulse_Count(uint16 count)
+void Set_Data_Store(PGA450_Parameter* para)
 {
+	Write_ESFR(ADDR_DOWNSAMPLE,para->downsample);
+	Write_ESFR(ADDR_FIFO_CTRL,para->FIFO_mode);
+	Write_ESFR(ADDR_BLANKING_TIME,para->blink_time);
+}
+
+void Set_Transducer_Driver(Transducer_Driver_Parameter* driver)
+{
+	uint32 temp;
+	//write burst_mode
+	Write_ESFR(ADDR_BURST_MODE,driver->burst_mode);
+
+	//write output voltage
+	Write_ESFR(ADDR_VREG_SEL,driver->drive_voltage);
+
+	//write pulse number
+	Write_ESFR(ADDR_PULSE_CNTA,driver->outA_pulse_num);
+	Write_ESFR(ADDR_PULSE_CNTB,driver->outB_pulse_num);
+
+	//wrtie frequency
+	temp = 16000000/(driver->frequency*2);
+	if(temp > 0x7FF) temp = 0x7FF;
+	driver->outA_on_time = temp;   //ON_A = dec2hex(FOSC / fburst / 2)
+	Write_ESFR(ADDR_ONA_MSB,driver->outA_on_time >> 8);
+	Write_ESFR(ADDR_ONA_LSB,driver->outA_on_time & 0xFF);
+
+	driver->outA_off_time = temp;
+	Write_ESFR(ADDR_OFFA_MSB,driver->outA_off_time >> 8);
+	Write_ESFR(ADDR_OFFA_LSB,driver->outA_off_time& 0xFF);
+
+	driver->outB_on_time = temp;   //ON_A = dec2hex(FOSC / fburst / 2)
+	Write_ESFR(ADDR_ONB_MSB,driver->outB_on_time >> 8);
+	Write_ESFR(ADDR_ONB_LSB,driver->outB_on_time & 0xFF);
+
+	driver->outB_off_time = temp;
+	Write_ESFR(ADDR_OFFB_MSB,driver->outB_off_time >> 8);
+	Write_ESFR(ADDR_OFFB_LSB,driver->outB_off_time& 0xFF);
+
+	driver->dead_time = (uint32)((float)temp*0.05);  //5% deadtime
+	if(driver->dead_time < 3) driver->dead_time = 3;
+	Write_ESFR(ADDR_DEADTIME,driver->dead_time);
+}
+
+void Start_PGA450(void)
+{
+	Write_ESFR(ADDR_EN_CTRL,0x0B);
+}
+
+void Read_PGA450_FIFO(uint8* pbuf)
+{
+	uint16 i;
+	for(i=0;i<768;i++)
+	{
+		Read_EXT_RAM(i,pbuf);
+		pbuf++;
+	}
 }
 /*********************************************************************
 *********************************************************************/

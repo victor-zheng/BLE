@@ -93,12 +93,6 @@ typedef struct PGA450_Parameter {
 	uint8                        FIFO_mode;     //0=12bit   1=upper 8bit  2=lower 8bit 3=mid 8bit
 	uint8                        blink_time;    //0-255
 }PGA450_Parameter;
-/*********************************************************************
-*  EXTERNAL VARIABLES
-*/
-extern PGA450_W_Package PGA450_Write;
-extern PGA450_R_Package PGA450_Read;
-extern SPI_Handle SPI_PGA450_Handle;
 
 /*********************************************************************
  * CONSTANTS
@@ -303,6 +297,16 @@ uint8 Write_ESFR(uint8 addr, uint8 data);
  */
 void PGA450_Reset(void);
 void PGA450_Release(void);
+void Initial_PGA450(void);
+void Start_PGA450(void);
+void Read_PGA450_FIFO(uint8* pbuf);
+/*********************************************************************
+*  EXTERNAL VARIABLES
+*/
+extern PGA450_W_Package PGA450_Write;
+extern PGA450_R_Package PGA450_Read;
+extern SPI_Handle SPI_PGA450_Handle;
+extern volatile uint8 FIFO_Buffer[768];
 
 /*********************************************************************
 *********************************************************************/

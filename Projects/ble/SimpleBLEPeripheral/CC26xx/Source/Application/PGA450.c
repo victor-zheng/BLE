@@ -53,7 +53,7 @@ PGA450_W_Package PGA450_Write;
 PGA450_R_Package PGA450_Read;
 SPI_Handle SPI_PGA450_Handle;
 
-volatile uint8 buffer[768];
+volatile uint8 FIFO_Buffer[768];
 
 PGA450_Parameter PAG450_Para = {
 		{PARA_MODE_PUSH_PULL,10,10,40,0,0,0,0,0},
@@ -98,7 +98,7 @@ const Lowpass_Coefficient Lowpass_Coefficient_Table[26][8] = {
 		{{0x6D53,0x957},{0x5CFF,0x1180},{0x4E70,0x18C8},{0x4138,0x1F64},{0x3505,0x257E},{0x2997,0x2B35},{0x1EBB,0x30A3},{0x1446,0x35DD}} //0x32
 	};
 
-const Bandpass_Coefficient Bandpass_Coefficient_Table[8][26] = {
+const Bandpass_Coefficient Bandpass_Coefficient_Table[32][4] = {
 		//         BW=4k               BW=5k                   BW=6k                  BW=7k
 	    {{0xF54A,0xF9A5,0x032D},{0xF48B,0xF815,0x03F6},{0xF3CD,0xF687,0x04BD},{0xF311,0xF4FB,0x0582}},//39k
 		{{0xF4E6,0xF9A5,0x032D},{0xF427,0xF815,0x03F6},{0xF36A,0xF687,0x04BD},{0xF2AE,0xF4FB,0x0582}},//40k
@@ -363,6 +363,15 @@ void Read_PGA450_FIFO(uint8* pbuf)
 		Read_EXT_RAM(i,pbuf);
 		pbuf++;
 	}
+}
+
+void Initial_PGA450(void)
+{
+	Set_Transducer_Driver(&PAG450_Para.driver);
+	Set_LNA_Gain(PAG450_Para.LNA_gain);
+	Set_Bandpass_Coefficient(PAG450_Para.BPF_CF,PAG450_Para.BPF_BW);
+	Set_Lowpass_Coefficient(PAG450_Para.LPF_CUT,PAG450_Para.downsample);
+	Set_Data_Store(&PAG450_Para);
 }
 /*********************************************************************
 *********************************************************************/

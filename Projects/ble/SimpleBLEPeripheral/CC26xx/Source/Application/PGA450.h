@@ -72,9 +72,9 @@ typedef struct Transducer_Driver_Parameter {
 	                            //3=Single-ended on OUTA, single-ended on OUTB
 	                            //4=Micro on OUTA, micro on OUTB
 	uint8    drive_voltage;     //0-15   4.7V-8.4V
-	uint8    outA_pulse_num;
-	uint8    outB_pulse_num;
-	uint32   frequency;
+	uint8    outA_pulse_num;    //6bit
+	uint8    outB_pulse_num;    //6bit
+	uint32   frequency;         //49-70kHz
 	uint16   outA_on_time;
 	uint16   outA_off_time;
 	uint16   outB_on_time;
@@ -89,7 +89,7 @@ typedef struct PGA450_Parameter {
 	uint8                        BPF_CF;        //39-70
 	uint8                        BPF_BW;        //4-7
 	uint8                        downsample;    //if low pass enable 25 ¡Ü DOWNSAMPLE ¡Ü 50
-	uint8                        LPF_CUT;       //1-8  0.5kHz-4kHz
+	uint8                        LPF_CUT;       //0-7  0.5kHz-4kHz
 	uint8                        FIFO_mode;     //0=12bit   1=upper 8bit  2=lower 8bit 3=mid 8bit
 	uint8                        blink_time;    //0-255
 }PGA450_Parameter;
@@ -207,6 +207,91 @@ extern SPI_Handle SPI_PGA450_Handle;
 #define ADDR_DIGITAL_MUX          0xEA
 
 
+// parameter for burst mode
+#define PARA_MODE_PUSH_PULL       0
+#define PARA_MODE_SINGLE_A        1
+#define PARA_MODE_SINGLE_B        2
+#define PARA_MODE_SINGLE_AB       3
+#define PARA_MODE_MICRO_AB        4
+
+//parameter for output voltage
+#define PARA_VOLTAGE_4P7V         0
+#define PARA_VOLTAGE_4P8V         1
+#define PARA_VOLTAGE_4P9V         2
+#define PARA_VOLTAGE_5P0V         3
+#define PARA_VOLTAGE_5P1V         4
+#define PARA_VOLTAGE_5P2V         5
+#define PARA_VOLTAGE_5P3V         6
+#define PARA_VOLTAGE_5P4V         7
+#define PARA_VOLTAGE_7P7V         8
+#define PARA_VOLTAGE_7P8V         9
+#define PARA_VOLTAGE_7P9V         10
+#define PARA_VOLTAGE_8P0V         11
+#define PARA_VOLTAGE_8P1V         12
+#define PARA_VOLTAGE_8P2V         13
+#define PARA_VOLTAGE_8P3V         14
+#define PARA_VOLTAGE_8P4V         15
+
+//parameter for output frequency
+#define PARA_FREQ_39kHZ           39
+#define PARA_FREQ_40kHZ           40
+#define PARA_FREQ_41kHZ           41
+#define PARA_FREQ_42kHZ           42
+#define PARA_FREQ_43kHZ           43
+#define PARA_FREQ_44kHZ           44
+#define PARA_FREQ_45kHZ           45
+#define PARA_FREQ_46kHZ           46
+#define PARA_FREQ_47kHZ           47
+#define PARA_FREQ_48kHZ           48
+#define PARA_FREQ_49kHZ           49
+#define PARA_FREQ_50kHZ           50
+#define PARA_FREQ_51kHZ           51
+#define PARA_FREQ_52kHZ           52
+#define PARA_FREQ_53kHZ           53
+#define PARA_FREQ_54kHZ           54
+#define PARA_FREQ_55kHZ           55
+#define PARA_FREQ_56kHZ           56
+#define PARA_FREQ_57kHZ           57
+#define PARA_FREQ_58kHZ           58
+#define PARA_FREQ_59kHZ           59
+#define PARA_FREQ_60kHZ           60
+#define PARA_FREQ_61kHZ           61
+#define PARA_FREQ_62kHZ           62
+#define PARA_FREQ_63kHZ           63
+#define PARA_FREQ_64kHZ           64
+#define PARA_FREQ_65kHZ           65
+#define PARA_FREQ_66kHZ           66
+#define PARA_FREQ_67kHZ           67
+#define PARA_FREQ_68kHZ           68
+#define PARA_FREQ_69kHZ           69
+#define PARA_FREQ_70kHZ           70
+//parameter for LNA gain
+#define PARA_LNA_GAIN_40dB        0
+#define PARA_LNA_GAIN_54dB        1
+#define PARA_LNA_GAIN_59dB        2
+#define PARA_LNA_GAIN_64dB        3
+
+//parameter for bandpass filter
+#define PARA_BPF_BW_4kHz          4
+#define PARA_BPF_BW_5kHz          5
+#define PARA_BPF_BW_6kHz          6
+#define PARA_BPF_BW_7kHz          7
+
+//parameter for lowpass filter
+#define PARA_LPF_0P5kHz           0
+#define PARA_LPF_1P0kHz           1
+#define PARA_LPF_1P5kHz           2
+#define PARA_LPF_2P0kHz           3
+#define PARA_LPF_2P5kHz           4
+#define PARA_LPF_3P0kHz           5
+#define PARA_LPF_3P5kHz           6
+#define PARA_LPF_4P0kHz           7
+
+//parameter for FIFO mode
+#define PARA_FIFO_12BIT           0
+#define PARA_FIFO_8BIT_UP         1
+#define PARA_FIFO_8BIT_LOW        2
+#define PARA_FIFO_8BIT_MID        3
 /*********************************************************************
  * INTERNAL FUNCTIONS
  */

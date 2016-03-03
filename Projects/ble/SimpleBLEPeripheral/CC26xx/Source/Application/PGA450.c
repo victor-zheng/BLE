@@ -55,7 +55,16 @@ SPI_Handle SPI_PGA450_Handle;
 
 volatile uint8 buffer[768];
 
-PGA450_Parameter PAG450_Para = {};
+PGA450_Parameter PAG450_Para = {
+		{PARA_MODE_PUSH_PULL,10,10,40,0,0,0,0,0},
+		PARA_LNA_GAIN_64dB,
+		PARA_FREQ_70kHZ,
+		PARA_BPF_BW_4kHz,
+		30,
+		PARA_LPF_4P0kHz,
+		PARA_FIFO_8BIT_UP,
+		100
+};
 /*********************************************************************
  * LOCAL FUNCTIONS
  */

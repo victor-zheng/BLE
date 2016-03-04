@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.2.6                      
 ******************************************************************************
->> Linked Thu Feb 18 14:38:02 2016
+>> Linked Fri Mar 04 16:24:33 2016
 
 OUTPUT FILE NAME:   <SimpleBLEPeripheralStack.out>
 ENTRY POINT SYMBOL: "startup_entry"  address: 0000e001

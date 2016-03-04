@@ -359,7 +359,7 @@ static SPI_Handle Spi_1_init(void)
 
   // Initialize the SPI driver
   SPI_Params_init(&SbpSpiParams);
-  SbpSpiParams.bitRate = 100000;
+  SbpSpiParams.bitRate = 400000;
   SbpSpiParams.frameFormat = SPI_POL0_PHA1;
   SbpSpiHandle = SPI_open(CC2650_SPI1, &SbpSpiParams);
   if (!SbpSpiHandle)
@@ -412,7 +412,8 @@ static void SimpleBLEPeripheral_init(void)
   // Reset the PGA450 from SPI;
   PGA450_Reset();
   Initial_PGA450();
-  Start_PGA450();
+  Turn_no_Sample();
+  Turn_off_Sample();
   Read_PGA450_FIFO((uint8*)&FIFO_Buffer);
 
 #ifndef SENSORTAG_HW

@@ -56,9 +56,9 @@ SPI_Handle SPI_PGA450_Handle;
 volatile uint8 FIFO_Buffer[768];
 
 PGA450_Parameter PAG450_Para = {
-		{PARA_MODE_PUSH_PULL,10,10,40,0,0,0,0,0},
+		{PARA_MODE_PUSH_PULL,PARA_VOLTAGE_5P0V,10,10,40000,0,0,0,0,0},
 		PARA_LNA_GAIN_64dB,
-		PARA_FREQ_70kHZ,
+		PARA_FREQ_40kHZ,
 		PARA_BPF_BW_4kHz,
 		30,
 		PARA_LPF_4P0kHz,
@@ -293,11 +293,11 @@ void Set_Bandpass_Coefficient(uint8 CF, uint8 BW )
 	Write_ESFR(ADDR_BPF_B1_LSB,B1 & 0xFF);
 }
 
-void Set_Lowpass_Coefficient(uint8 cutoff, uint8 downsample)
+void Set_Lowpass_Coefficient(uint16 cutoff, uint16 downsample)
 {
 	uint16 A2,B1;
-	A2 = Lowpass_Coefficient_Table[downsample][cutoff].A2;
-	B1 = Lowpass_Coefficient_Table[downsample][cutoff].B1;
+	A2 = Lowpass_Coefficient_Table[downsample-25][cutoff].A2;
+	B1 = Lowpass_Coefficient_Table[downsample-25][cutoff].B1;
 	//write A2
 	Write_ESFR(ADDR_BPF_A2_MSB,A2 >> 8);
 	Write_ESFR(ADDR_BPF_A2_LSB,A2 & 0xFF);
@@ -309,7 +309,7 @@ void Set_Lowpass_Coefficient(uint8 cutoff, uint8 downsample)
 void Set_Data_Store(PGA450_Parameter* para)
 {
 	Write_ESFR(ADDR_DOWNSAMPLE,para->downsample);
-	Write_ESFR(ADDR_FIFO_CTRL,para->FIFO_mode);
+	Write_ESFR(ADDR_FIFO_CTRL,para->FIFO_mode | 0x4);
 	Write_ESFR(ADDR_BLANKING_TIME,para->blink_time);
 }
 
@@ -345,16 +345,20 @@ void Set_Transducer_Driver(Transducer_Driver_Parameter* driver)
 	Write_ESFR(ADDR_OFFB_MSB,driver->outB_off_time >> 8);
 	Write_ESFR(ADDR_OFFB_LSB,driver->outB_off_time& 0xFF);
 
-	driver->dead_time = (uint32)((float)temp*0.05);  //5% deadtime
+	driver->dead_time = (float)temp*0.05;  //5% deadtime
 	if(driver->dead_time < 3) driver->dead_time = 3;
 	Write_ESFR(ADDR_DEADTIME,driver->dead_time);
 }
 
-void Start_PGA450(void)
+void Turn_no_Sample(void)
 {
-	Write_ESFR(ADDR_EN_CTRL,0x0B);
+	Write_ESFR(ADDR_EN_CTRL,0x09);
 }
 
+void Turn_off_Sample(void)
+{
+    Write_ESFR(ADDR_EN_CTRL,0x00);
+}
 void Read_PGA450_FIFO(uint8* pbuf)
 {
 	uint16 i;
@@ -364,14 +368,21 @@ void Read_PGA450_FIFO(uint8* pbuf)
 		pbuf++;
 	}
 }
+void Power_Enable(void)
+{
+	Write_ESFR(ADDR_PWR_MODE,0x03);
+}
 
 void Initial_PGA450(void)
 {
+	Power_Enable();
 	Set_Transducer_Driver(&PAG450_Para.driver);
 	Set_LNA_Gain(PAG450_Para.LNA_gain);
 	Set_Bandpass_Coefficient(PAG450_Para.BPF_CF,PAG450_Para.BPF_BW);
 	Set_Lowpass_Coefficient(PAG450_Para.LPF_CUT,PAG450_Para.downsample);
 	Set_Data_Store(&PAG450_Para);
+	Write_ESFR(ADDR_ANALOG_MUX,0x04);
+	Write_ESFR(ADDR_DIGITAL_MUX,0x08);
 }
 /*********************************************************************
 *********************************************************************/

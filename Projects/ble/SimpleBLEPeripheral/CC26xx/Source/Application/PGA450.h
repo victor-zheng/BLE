@@ -298,7 +298,8 @@ uint8 Write_ESFR(uint8 addr, uint8 data);
 void PGA450_Reset(void);
 void PGA450_Release(void);
 void Initial_PGA450(void);
-void Start_PGA450(void);
+void Turn_no_Sample(void);
+void Turn_off_Sample(void);
 void Read_PGA450_FIFO(uint8* pbuf);
 /*********************************************************************
 *  EXTERNAL VARIABLES

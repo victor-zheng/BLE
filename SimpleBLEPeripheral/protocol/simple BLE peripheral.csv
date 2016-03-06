@@ -1,0 +1,45 @@
+Handle,Uuid,UuidDesc,Value,Properties
+0x0001,0x2800,GATT Primary Service Declaration,0:18,
+0x0002,0x2803,  GATT Characteristic Declaration,02:03:00:00:2A,
+0x0003,0x2A00,    Device Name,Simple BLE Peripheral,Rd  0x02
+0x0004,0x2803,  GATT Characteristic Declaration,02:05:00:01:2A,
+0x0005,0x2A01,    Appearance,0:00,Rd  0x02
+0x0006,0x2803,  GATT Characteristic Declaration,02:07:00:04:2A,
+0x0007,0x2A04,    Peripheral Preferred Connection Parameters,50:00:A0:00:00:00:E8:03,Rd  0x02
+0x0008,0x2800,GATT Primary Service Declaration,1:18,
+0x0009,0x2800,GATT Primary Service Declaration,0A:18,
+0x000A,0x2803,  GATT Characteristic Declaration,02:0B:00:23:2A,
+0x000B,0x2A23,    System ID,03:19:B8:00:00:48:B4:B0,Rd  0x02
+0x000C,0x2803,  GATT Characteristic Declaration,02:0D:00:24:2A,
+0x000D,0x2A24,    Model Number String,Model Number,Rd  0x02
+0x000E,0x2803,  GATT Characteristic Declaration,02:0F:00:25:2A,
+0x000F,0x2A25,    Serial Number String,Serial Number,Rd  0x02
+0x0010,0x2803,  GATT Characteristic Declaration,02:11:00:26:2A,
+0x0011,0x2A26,    Firmware Revision String,Firmware Revision,Rd  0x02
+0x0012,0x2803,  GATT Characteristic Declaration,02:13:00:27:2A,
+0x0013,0x2A27,    Hardware Revision String,Hardware Revision,Rd  0x02
+0x0014,0x2803,  GATT Characteristic Declaration,02:15:00:28:2A,
+0x0015,0x2A28,    Software Revision String,Software Revision,Rd  0x02
+0x0016,0x2803,  GATT Characteristic Declaration,02:17:00:29:2A,
+0x0017,0x2A29,    Manufacturer Name String,Manufacturer Name,Rd  0x02
+0x0018,0x2803,  GATT Characteristic Declaration,02:19:00:2A:2A,
+0x0019,0x2A2A,    IEEE 11073-20601 Regulatory Certification Data List,FE:00:65:78:70:65:72:69:6D:65:6E:74:61:6C,Rd  0x02
+0x001A,0x2803,  GATT Characteristic Declaration,02:1B:00:50:2A,
+0x001B,0x2A50,    PnP ID,01:0D:00:00:00:10:01,Rd  0x02
+0x001C,0x2800,GATT Primary Service Declaration,F0:FF,
+0x001D,0x2803,  GATT Characteristic Declaration,0A:1E:00:F1:FF,
+0x001E,0xFFF1,    Simple Profile Char 1,1,Rd Wr  0x0A
+0x001F,0x2901,    Characteristic User Description,Characteristic 1,
+0x0020,0x2803,  GATT Characteristic Declaration,02:21:00:F2:FF,
+0x0021,0xFFF2,    Simple Profile Char 2,2,Rd  0x02
+0x0022,0x2901,    Characteristic User Description,Characteristic 2,
+0x0023,0x2803,  GATT Characteristic Declaration,08:24:00:F3:FF,
+0x0024,0xFFF3,    Simple Profile Char 3,,Wr  0x08
+0x0025,0x2901,    Characteristic User Description,Characteristic 3,
+0x0026,0x2803,  GATT Characteristic Declaration,10:27:00:F4:FF,
+0x0027,0xFFF4,    Simple Profile Char 4,,Nfy  0x10
+0x0028,0x2902,    Client Characteristic Configuration,0:00,
+0x0029,0x2901,    Characteristic User Description,Characteristic 4,
+0x002A,0x2803,  GATT Characteristic Declaration,02:2B:00:F5:FF,
+0x002B,0xFFF5,    Simple Profile Char 5,,Rd  0x02
+0x002C,0x2901,    Characteristic User Description,Characteristic 5,

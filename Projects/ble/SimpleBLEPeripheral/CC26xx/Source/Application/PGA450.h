@@ -94,6 +94,97 @@ typedef struct PGA450_Parameter {
 	uint8                        blink_time;    //0-255
 }PGA450_Parameter;
 
+typedef struct PGA450_ESFR {
+    uint8 ADDR_BPF_B1_MSB;//           0x92
+    uint8 ADDR_BPF_B1_LSB;//           0x93
+    uint8 ADDR_BPF_A2_MSB;//           0x94
+    uint8 ADDR_BPF_A2_LSB;//           0x95
+    uint8 ADDR_BPF_A3_MSB;//           0x96
+    uint8 ADDR_BPF_A3_LSB;//           0x97
+    uint8 null_0x98;                      //0x98
+    uint8 null_0x99;                      //0x99
+    uint8 null_0x9a;                      //0x9a
+    uint8 null_0x9b;                      //0x9b
+    uint8 null_0x9c;                      //0x9c
+    uint8 null_0x9d;                      //0x9d
+    uint8 null_0x9e;                      //0x9e
+    uint8 null_0x9f;                      //0x9f
+    uint8 null_0xa0;                      //0xA0
+    uint8 ADDR_LPF_B1_MSB;//           0xA1
+    uint8 ADDR_LPF_B1_LSB;//           0xA2
+    uint8 ADDR_LPF_A2_MSB;//           0xA3
+    uint8 ADDR_LPF_A2_LSB;//           0xA4
+    uint8 ADDR_DOWNSAMPLE;//           0xA5
+    uint8 ADDR_ONA_MSB;//              0xA6
+    uint8 ADDR_ONA_LSB;//              0xA7
+    uint8 null_0xa8;                      //0xA8
+    uint8 ADDR_OFFA_MSB;//             0xA9
+    uint8 ADDR_OFFA_LSB;//             0xAA
+    uint8 ADDR_ONB_MSB;//              0xAB
+    uint8 ADDR_ONB_LSB;//              0xAC
+    uint8 ADDR_OFFB_MSB;//             0xAD
+    uint8 ADDR_OFFB_LSB;//             0xAE
+    uint8 ADDR_PULSE_CNTA;//           0xAF
+    uint8 null_0xb0;//                      0xB0
+    uint8 ADDR_PULSE_CNTB;//           0xB1
+    uint8 ADDR_DEADTIME;//             0xB2
+    uint8 ADDR_BURST_MODE;//           0xB3
+    uint8 ADDR_TEMP_SENS;//            0xB4
+    uint8 ADDR_SAT_DEGLITCH;//         0xB5
+    uint8 ADDR_SAT_TIME;//             0xB6
+    uint8 ADDR_CONTROL_1;//            0xB7
+    uint8 null_0xb8;//                      0xB8
+    uint8 ADDR_BLANKING_TIME;//        0xB9
+    uint8 ADDR_FRT_MSB;//              0xBA
+    uint8 ADDR_FRT_LSB;//              0xBB
+    uint8 ADDR_GPIO_CTRL;//            0xBC
+    uint8 ADDR_CLK_SEL;//              0xBD
+    uint8 ADDR_WD_EN;//                0xBE
+    uint8 ADDR_LIN_SCI;//              0xBF
+    uint8 ADDR_EE_CTRL;//              0xC0
+    uint8 ADDR_STATUS1;//              0xC1
+    uint8 ADDR_STATUS2;//              0xC2
+    uint8 ADDR_PWR_MODE;//             0xC3
+    uint8 ADDR_DP_SCI_CTRL;//          0xC4
+    uint8 ADDR_FIFO_CTRL;//            0xC5
+    uint8 null_0xc6;//                      0xC6
+    uint8 null_0xc7;//                      0xC7
+    uint8 ADDR_EN_CTRL;//              0xC8
+    uint8 ADDR_RX_DATA1;//             0xC9
+    uint8 ADDR_RX_DATA2;//             0xCA
+    uint8 ADDR_RX_DATA3;//             0xCB
+    uint8 ADDR_RX_DATA4;//             0xCC
+    uint8 ADDR_RX_DATA5;//             0xCD
+    uint8 ADDR_RX_DATA6;//             0xCE
+    uint8 ADDR_RX_DATA7;//             0xCF
+    uint8 null_0xd0;//                      0xD0
+    uint8 ADDR_RX_DATA8;//             0xD1
+    uint8 ADDR_LIN_PID;//              0xD2
+    uint8 ADDR_TX_DATA1;//             0xD3
+    uint8 ADDR_TX_DATA2;//             0xD4
+    uint8 ADDR_TX_DATA3;//             0xD5
+    uint8 ADDR_TX_DATA4;//             0xD6
+    uint8 ADDR_TX_DATA5;//             0xD7
+    uint8 ADDR_TX_DATA6;//             0xD8
+    uint8 ADDR_TX_DATA7;//             0xD9
+    uint8 ADDR_TX_DATA8;//             0xDA
+    uint8 ADDR_DATA_CNT;//             0xDB
+    uint8 ADDR_LIN_CFG;//              0xDC
+    uint8 ADDR_LIN_CTRL;//             0xDD
+    uint8 ADDR_LIN_STATUS;//           0xDE
+    uint8 ADDR_FIFO_POINTER_MSB;//     0xDF
+    uint8 null_0xe0;//                      0xE0
+    uint8 ADDR_FIFO_POINTER_LSB;//     0xE1
+    uint8 ADDR_VREG_SEL;//             0xE2
+    uint8 ADDR_SYNC_COUNT_MSB;//       0xE3
+    uint8 ADDR_SYNC_COUNT_LSB;//       0xE4
+    uint8 ADDR_TEMP_DAC_CTRL;//        0xE5
+    uint8 ADDR_OSC_SYNC_CTRL;//        0xE6
+    uint8 null_0xe7;//                      0xE7
+    uint8 null_0xe8;//                      0xE8
+    uint8 ADDR_ANALOG_MUX;//           0xE9
+    uint8 ADDR_DIGITAL_MUX;//          0xEA
+}PGA450_ESFR;
 /*********************************************************************
  * CONSTANTS
  */
@@ -260,10 +351,10 @@ typedef struct PGA450_Parameter {
 #define PARA_FREQ_69kHZ           69
 #define PARA_FREQ_70kHZ           70
 //parameter for LNA gain
-#define PARA_LNA_GAIN_40dB        0
-#define PARA_LNA_GAIN_54dB        1
-#define PARA_LNA_GAIN_59dB        2
-#define PARA_LNA_GAIN_64dB        3
+#define PARA_LNA_GAIN_40dB        3
+#define PARA_LNA_GAIN_54dB        2
+#define PARA_LNA_GAIN_59dB        1
+#define PARA_LNA_GAIN_64dB        0
 
 //parameter for bandpass filter
 #define PARA_BPF_BW_4kHz          4
@@ -298,9 +389,11 @@ uint8 Write_ESFR(uint8 addr, uint8 data);
 void PGA450_Reset(void);
 void PGA450_Release(void);
 void Initial_PGA450(void);
-void Turn_no_Sample(void);
+void Turn_on_Pulse(void);
+void Turn_on_Sample(void);
 void Turn_off_Sample(void);
 void Read_PGA450_FIFO(uint8* pbuf);
+void Read_ALL_ESFR(void);
 /*********************************************************************
 *  EXTERNAL VARIABLES
 */

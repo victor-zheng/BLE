@@ -382,7 +382,7 @@ static SPI_Handle Spi_1_init(void)
  *
  * @return  None.
  */
-Uint8 test;
+Uint32 test;
 static void SimpleBLEPeripheral_init(void)
 {
   // ******************************************************************
@@ -411,10 +411,28 @@ static void SimpleBLEPeripheral_init(void)
   SPI_PGA450_Handle = Spi_1_init();
   // Reset the PGA450 from SPI;
   PGA450_Reset();
+
   Initial_PGA450();
-  Turn_no_Sample();
+  Read_ALL_ESFR();
+
+  // first sample
+  Turn_on_Sample();
+  test = 100000;
+  while(test>0) test--;
   Turn_off_Sample();
   Read_PGA450_FIFO((uint8*)&FIFO_Buffer);
+
+  Read_ALL_ESFR();
+
+
+//sencond sample
+  Turn_on_Sample();
+  test = 100000;
+  while(test>0) test--;
+  Turn_off_Sample();
+  Read_PGA450_FIFO((uint8*)&FIFO_Buffer);
+  Read_ALL_ESFR();
+
 
 #ifndef SENSORTAG_HW
   Board_openLCD();

@@ -54,13 +54,14 @@ PGA450_R_Package PGA450_Read;
 SPI_Handle SPI_PGA450_Handle;
 
 volatile uint8 FIFO_Buffer[768];
+PGA450_ESFR ESFR;
 
 PGA450_Parameter PAG450_Para = {
-		{PARA_MODE_PUSH_PULL,PARA_VOLTAGE_5P0V,10,10,40000,0,0,0,0,0},
+		{PARA_MODE_PUSH_PULL,PARA_VOLTAGE_5P0V,12,12,58000,0,0,0,0,0},
 		PARA_LNA_GAIN_64dB,
-		PARA_FREQ_40kHZ,
+		PARA_FREQ_58kHZ,
 		PARA_BPF_BW_4kHz,
-		30,
+		40,
 		PARA_LPF_4P0kHz,
 		PARA_FIFO_8BIT_UP,
 		100
@@ -350,7 +351,12 @@ void Set_Transducer_Driver(Transducer_Driver_Parameter* driver)
 	Write_ESFR(ADDR_DEADTIME,driver->dead_time);
 }
 
-void Turn_no_Sample(void)
+void Turn_on_Pulse(void)
+{
+    Write_ESFR(ADDR_EN_CTRL,0x01);
+}
+
+void Turn_on_Sample(void)
 {
 	Write_ESFR(ADDR_EN_CTRL,0x09);
 }
@@ -359,6 +365,7 @@ void Turn_off_Sample(void)
 {
     Write_ESFR(ADDR_EN_CTRL,0x00);
 }
+
 void Read_PGA450_FIFO(uint8* pbuf)
 {
 	uint16 i;
@@ -383,6 +390,19 @@ void Initial_PGA450(void)
 	Set_Data_Store(&PAG450_Para);
 	Write_ESFR(ADDR_ANALOG_MUX,0x04);
 	Write_ESFR(ADDR_DIGITAL_MUX,0x08);
+}
+
+void Read_ALL_ESFR(void)
+{
+    uint8* pesfr;
+
+    uint8 i;
+    pesfr = (uint8*)&ESFR;
+    for(i=0x92;i<0xEB;i++)
+    {
+        Read_ESFR(i,pesfr);
+        pesfr++;
+    }
 }
 /*********************************************************************
 *********************************************************************/

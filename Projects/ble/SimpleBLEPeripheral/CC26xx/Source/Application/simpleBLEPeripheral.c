@@ -383,6 +383,17 @@ static SPI_Handle Spi_1_init(void)
  * @return  None.
  */
 Uint32 test;
+volatile uint32 i,j;
+void delay(uint32 time)
+{
+    i=time;
+    while(i>0)
+    {
+        i--;
+        j=100;
+        while(j>0)j--;
+    }
+}
 static void SimpleBLEPeripheral_init(void)
 {
   // ******************************************************************
@@ -416,23 +427,14 @@ static void SimpleBLEPeripheral_init(void)
   Read_ALL_ESFR();
 
   // first sample
+  Turn_on_Pulse();
+  delay(10);
+  VREG_Disable();
+  delay(5);
   Turn_on_Sample();
-  test = 100000;
-  while(test>0) test--;
-  Turn_off_Sample();
+  delay(100);
   Read_PGA450_FIFO((uint8*)&FIFO_Buffer);
-
-  Read_ALL_ESFR();
-
-
-//sencond sample
-  Turn_on_Sample();
-  test = 100000;
-  while(test>0) test--;
   Turn_off_Sample();
-  Read_PGA450_FIFO((uint8*)&FIFO_Buffer);
-  Read_ALL_ESFR();
-
 
 #ifndef SENSORTAG_HW
   Board_openLCD();

@@ -381,7 +381,7 @@ typedef struct PGA450_ESFR {
  * INTERNAL FUNCTIONS
  */
 uint8 Read_ESFR(uint8 addr, uint8* data);
-uint8 Write_ESFR(uint8 addr, uint8 data);
+uint8 Write_ESFR(uint8 addr, uint8 data, uint8 check);
 
 /*********************************************************************
  * PUBLIC FUNCTIONS
@@ -394,6 +394,8 @@ void Turn_on_Sample(void);
 void Turn_off_Sample(void);
 void Read_PGA450_FIFO(uint8* pbuf);
 void Read_ALL_ESFR(void);
+void Power_Enable(void);
+void VREG_Disable(void);
 /*********************************************************************
 *  EXTERNAL VARIABLES
 */

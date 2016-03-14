@@ -426,7 +426,7 @@ static void SimpleBLEPeripheral_init(void)
   Initial_PGA450();
   Read_ALL_ESFR();
 
-  // first sample
+/*  // first sample
   Turn_on_Pulse();
   delay(10);
   VREG_Disable();
@@ -435,6 +435,16 @@ static void SimpleBLEPeripheral_init(void)
   delay(100);
   Read_PGA450_FIFO((uint8*)&FIFO_Buffer);
   Turn_off_Sample();
+
+  // second sample
+  Turn_on_Pulse();
+  delay(10);
+  VREG_Disable();
+  delay(5);
+  Turn_on_Sample();
+  delay(100);
+  Read_PGA450_FIFO((uint8*)&FIFO_Buffer);
+  Turn_off_Sample();*/
 
 #ifndef SENSORTAG_HW
   Board_openLCD();

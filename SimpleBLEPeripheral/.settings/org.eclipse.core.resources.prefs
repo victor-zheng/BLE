@@ -25,3 +25,5 @@ encoding//FlashROM/TOOLS/subdir_vars.mk=UTF-8
 encoding//FlashROM/makefile=UTF-8
 encoding//FlashROM/objects.mk=UTF-8
 encoding//FlashROM/sources.mk=UTF-8
+encoding//PROFILES/simpleGATTprofile.c=UTF-8
+encoding//PROFILES/simpleGATTprofile.h=UTF-8

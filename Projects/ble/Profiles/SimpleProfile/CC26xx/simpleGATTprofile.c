@@ -61,7 +61,7 @@
  * CONSTANTS
  */
 
-#define SERVAPP_NUM_ATTR_SUPPORTED        17
+#define SERVAPP_NUM_ATTR_SUPPORTED        20
 
 /*********************************************************************
  * TYPEDEFS
